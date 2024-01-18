@@ -1,0 +1,88 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    <h1 class="text-center">Lista de Usuarios</h1>
+    <h5>Seleccione agregar para insertar un nuevo usuario</h5>
+    <hr />
+</div>
+<div>
+
+    <a href="@Url.Action("Form", "Usuario")" class="btn btn-success">Agregar</a>
+    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Get, new { enctype = "multipart/form-data" }))
+    {
+        @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control" })
+        @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control" })
+        <input type="submit" class="btn btn-dark" value="Buscar"/>
+    }
+    </div>
+@if (Model == null)
+{
+    <div class="alert alert-warning" role="alert">
+        Ocurrio Error!
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-dark table-hover" id="tabla">
+            <thead class="table-secondary">
+                <tr class="text-center">
+                    <th>Editar</th>
+                    <th>Imagen</th>
+                    <th><i class="fa-solid fa-circle-user" style="color: #000000;"></i> Nombre</th>
+                    <th>Edad</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (ML.Usuario usuario in Model.Usuarios)
+                {
+                    <tr>
+                        <td class="text-center"><a href="@Url.Action("Form","Usuario", new {IdUsuario = usuario.IdUsuario} )" class="btn btn-warning"><i class="fa-regular fa-pen-to-square" style="color: #000000;"></i></a></td>
+                        @if (usuario.Imagen == null)
+                        {
+                            <td><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" height="50" width="50"/></td>
+                        }
+                        else
+                        {
+                            <td><img src="data:image/*;base64,@Convert.ToBase64String(usuario.Imagen)" height="50" width="50" /></td>
+                        }
+                        <td class="text-center">@usuario.Nombre @usuario.ApellidoPaterno</td>
+                        <td class="text-center">@usuario.Edad</td>
+                        <td class="text-center"><a href="@Url.Action("Delete","Usuario", new {IdUsuario = usuario.IdUsuario} )" class="btn btn-danger"><i class="bi bi-trash" style="color:white"></i></a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+@section Scripts{
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.material.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#tabla').DataTable({
+            searching: false,
+            "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
+            autoWidth: false,
+            columnDefs: [
+                {
+                    targets: ['_all'],
+                    className: 'mdc-data-table__cell',
+                },
+            ],
+            language: {
+                url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+            },
+
+        });
+    });
+</script>
+    }
