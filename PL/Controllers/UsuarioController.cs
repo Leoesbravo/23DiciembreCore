@@ -11,5 +11,41 @@ namespace PL.Controllers
             usuario = (ML.Usuario)result["Usuario"];
             return View(usuario);
         }
+        [HttpGet]
+        public ActionResult Form()
+        {
+            ML.Usuario usuario = new ML.Usuario();
+            return View(usuario);
+        }
+        [HttpPost]
+        public ActionResult Form(ML.Usuario usuario)
+        {
+            IFormFile file = Request.Form.Files["amd"];
+            if(file != null)
+            {
+                usuario.Imagen = ConvertToBytes(file);
+                Dictionary<string, object> resultado = BL.Usuario.Add(usuario);
+
+                bool result = (bool)resultado["Resultado"];
+                if(result )
+                {
+                    return PartialView("Modal");
+                }
+            }
+            else
+            {
+
+            }
+            return View(usuario);
+        }
+        public byte[] ConvertToBytes(IFormFile foto)
+        {
+            using var fileStream = foto.OpenReadStream();
+
+            byte[] bytes = new byte[fileStream.Length];
+            fileStream.Read(bytes, 0, (int)fileStream.Length);
+
+            return bytes;
+        }
     }
 }

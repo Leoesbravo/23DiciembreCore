@@ -1,0 +1,145 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center">Formulario de Usuarios <i class="fa-solid fa-circle-user" style="color: #000000;"></i></h2>
+<hr />
+@using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.IdUsuario)
+    @Html.HiddenFor(model => model.Imagen)
+    <div class="row">
+
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Nombre)
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-circle-user" style="color: #000000;"></i></span>
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control", @placeholder = "Ejemplo: Luis", @onkeyup = "soloLetras(this,'lblNombre')" })
+
+            </div>
+            <label id="lblNombre" style="color:red"></label>
+            @Html.ValidationMessageFor(model => model.Nombre, "", new { @id = "lblNombre", @style = "Color: red" })
+
+        </div>
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.ApellidoPaterno)
+            @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control", @placeholder = "Ejemplo: Luis" })
+        </div>
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.ApellidoMaterno)
+            @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control", @placeholder = "Ejemplo: Luis" })
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Edad)
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-calendar-days"></i></span>
+                @Html.TextBoxFor(model => model.Edad, new { @class = "form-control", @id = "datepicker", @autocomplete = "false" })
+            </div>
+        </div>
+        <div class="col-md-4">
+            @Html.Label("Imagen")
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-camera"></i></span>
+                <input id="amd" type="file" name="amd" class="form-control" onchange="validateFile(), readURL(this)" />
+            </div>
+            @if (Model.Imagen == null)
+            {
+                <img id="img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png" height="150" width="150" />
+
+            }
+            else
+            {
+                <img src="data:image/*;base64,@Convert.ToBase64String(Model.Imagen)" height="150" width="150" />
+
+            }
+        </div>
+    </div>
+    <hr />
+
+
+    <div class="row">
+        @if (Model.IdUsuario != 0)
+        {
+            <input type="submit" class="btn btn-info" value="Actualizar" />
+        }
+        else
+        {
+            <input type="submit" class="btn btn-success" value="Agregar" />
+        }
+
+        <a href="@Url.Action("GetAll", "Usuario")" class="btn btn-danger">Cancelar</a>
+    </div>
+
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script type="text/javascript">
+    
+    $(function () {
+        $("#datepicker").datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+            showAnim: "clip"
+        });
+    });
+
+    function soloLetras(input, label) {
+        var texto = $(input).val()
+        var regex = /^[a-zA-Z\s]*$/;
+
+        if (!regex.test(texto)) {
+            $("#" + label).text("Solo se permiten letras y espacios");
+            $(input).val(texto.replace(/[^a-zA-Z\s]/g, ''));
+            $(input).css({ "border-color": "red", "background-color": "#f8d7da" })
+
+        }
+        else {
+            $("#" + label).text("");
+            $(input).css({ "border-color": "green", "background-color": "#D3F9C8" })
+        }
+    }
+
+    function validateFile() {
+        var allowedExtension = ['jpeg', 'jpg', 'png'];
+        var fileExtension = document.getElementById('amd').value.split('.').pop().toLowerCase();
+        var isValidFile = false;
+
+        for (var index in allowedExtension) {
+
+            if (fileExtension === allowedExtension[index]) {
+                isValidFile = true;
+                break;
+            }
+        }
+
+        if (!isValidFile) {
+            alert('Las extensiones permitidas son : *.' + allowedExtension.join(', *.'));
+            document.getElementById('amd').value = "";
+        }
+
+        return isValidFile;
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img').attr('src', e.target.result);
+
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

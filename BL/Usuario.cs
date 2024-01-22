@@ -1,4 +1,5 @@
 ﻿using DL;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BL
@@ -16,7 +17,7 @@ namespace BL
                     //Entity Framework
                     //FromSqlRaw--joins
                     //var filasAfectadasLinq = context.Usuarios.Add();
-                    var filasAfectadas = context.Database.ExecuteSqlRaw($"UsuarioAdd '{usuario.Nombre}', '{usuario.ApellidoPaterno}', '{usuario.ApellidoMaterno}', {usuario.Edad}, '{usuario.Direccion.Calle}', {0}, {""}");
+                    var filasAfectadas = context.Database.ExecuteSqlRaw($"UsuarioAdd '{usuario.Nombre}', '{usuario.ApellidoPaterno}', '{usuario.ApellidoMaterno}', {usuario.Edad}, '{""}', {1} ,@Imagen", new SqlParameter("@Imagen", usuario.Imagen));
                     //LINQ
                     //DL.Usuario usuar = new DL.Usuario();
                     //var filasAfectadas = context.Usuarios.Add(usuar);
@@ -138,5 +139,22 @@ namespace BL
             }
             return diccionario;
         }
+        //public static Dictionary<string,object> Add(ML.Usuario usuario)
+        //{
+        //    Dictionary<string, object> diccionario = new Dictionary<string, object> { { "Exepcion", "" }, { "Resultado", false }};
+        //    try
+        //    {
+        //        using (DL.LescogidoNormalizacionContext context = new LescogidoNormalizacionContext())
+        //        {
+        //            var query = context.Database.ExecuteSqlRaw($"UsuarioAdd {usuario.Nombre}, {usuario.ApellidoPaterno}, {usuario.ApellidoMaterno}, {usuario.Edad}, {""}, {""}, {usuario.Imagen}");
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //    return diccionario;
+        //}
     }
 }
