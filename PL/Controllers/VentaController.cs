@@ -20,7 +20,7 @@ namespace PL.Controllers
         [HttpGet]
         public ActionResult AgregarProducto(int idProducto)
         {
-            if(HttpContext.Session.GetString("Carrito") == null)
+            if (HttpContext.Session.GetString("Carrito") == null)
             {
                 Dictionary<string, object> resultado = BL.Producto.GetById(idProducto);
                 ML.Producto producto = (ML.Producto)resultado["Producto"];
@@ -37,6 +37,24 @@ namespace PL.Controllers
             }
             else
             {
+                var carrito = Newtonsoft.Json.JsonConvert.DeserializeObject<List<object>>(HttpContext.Session.GetString("Carrito"));
+                foreach (var producto in carrito)
+                {
+                    ML.Producto producto1 = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Producto>(producto.ToString());
+                    if(idProducto == producto1.Idproducto)
+                    {
+                        //Aumentar cantidad
+                        break;
+                    }
+                    else
+                    {
+
+                    }
+                    Dictionary<string, object> resultProducto = BL.Producto.GetById(idProducto);
+                    ML.Producto productoObj = (ML.Producto)resultProducto["Producto"];
+                    carrito.Add(productoObj);
+                    HttpContext.Session.SetString("Carrito", Newtonsoft.Json.JsonConvert.SerializeObject(carrito));
+                }
                 return RedirectToAction("Catalogo");
             }
           
