@@ -43,12 +43,15 @@ namespace PL.Controllers
                 foreach (var producto in carritoSession)
                 {
                     ML.Producto producto1 = Newtonsoft.Json.JsonConvert.DeserializeObject<ML.Producto>(producto.ToString());
-                    carrito.Productos.Add(producto1);
-                    if (idProducto == producto1.Idproducto)
+                    carrito.Productos.Add(producto1);                  
+                }
+                foreach (ML.Producto product in carrito.Productos)
+                {
+                    if (idProducto == product.Idproducto)
                     {
                         existe = true;
                         //Aumentar cantidad
-                        producto1.Cantidad += 1;
+                        product.Cantidad += 1;
                         break;
                     }
                     else
@@ -56,7 +59,6 @@ namespace PL.Controllers
                         existe = false;
                         //Lo tengo que agregar
                     }
-                  
                 }
                 if (existe == false)
                 {

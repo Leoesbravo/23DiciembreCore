@@ -39,13 +39,13 @@ namespace PL.Controllers
             }
             return View(usuario);
         }
-        [HttpPost]
-        public JsonResult ChangeStatus(int idUsuario,bool estado)
-        {
-            Dictionary<string, object> resultado  = BL.Usuario.ChangeStatus(idUsuario,estado);
-            bool result = (bool)resultado["Resultado"];
-            return Json(result);
-        }
+        //[HttpPost]
+        //public JsonResult ChangeStatus(int idUsuario,bool estado)
+        //{
+        //    Dictionary<string, object> resultado  = BL.Usuario.ChangeStatus(idUsuario,estado);
+        //    bool result = (bool)resultado["Resultado"];
+        //    return Json(result);
+        //}
         public byte[] ConvertToBytes(IFormFile foto)
         {
             using var fileStream = foto.OpenReadStream();

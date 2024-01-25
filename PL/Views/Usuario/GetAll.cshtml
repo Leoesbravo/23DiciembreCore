@@ -53,7 +53,7 @@ else
                         }
                         <td class="text-center">@usuario.Nombre @usuario.ApellidoPaterno</td>
                         <td class="text-center">@usuario.Edad</td>
-                        @if (usuario.Status)
+                      @*   @if (usuario.Status)
                         {
                             <td class="text-center">
                                 <div class="form-check form-switch">
@@ -70,7 +70,7 @@ else
 
                                 </div>
                             </td>
-                        }
+                        } *@
                         
 
                         <td class="text-center"><a href="@Url.Action("Delete","Usuario", new {IdUsuario = usuario.IdUsuario} )" class="btn btn-danger"><i class="bi bi-trash" style="color:white"></i></a></td>
