@@ -19,6 +19,7 @@ namespace ML
         public string Imagen { get; set; } = null!;
 
         public int Idsubcategoria2 { get; set; }
+        public int Cantidad { get; set; }
 
         public int Stock { get; set; }
         public List<object> Productos { get; set; }
