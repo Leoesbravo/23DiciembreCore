@@ -37,6 +37,7 @@ namespace ML
 
         public string ApellidoMaterno { get; set; }
         public int Edad { get; set; }
+        public bool Status { get; set; }
         public byte[] Imagen { get; set; }
         public List<object> Usuarios { get; set; }
 

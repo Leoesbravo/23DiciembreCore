@@ -6,6 +6,34 @@ namespace BL
 {
     public class Usuario
     {
+        public static Dictionary<string, object> ChangeStatus(int IdUsuario, bool estado)
+        {
+
+            Dictionary<string, object> diccionario = new Dictionary<string, object> { { "Exepcion", "" }, { "Resultado", false } };
+            try
+            {
+                using (DL.LescogidoNormalizacionContext context = new DL.LescogidoNormalizacionContext())
+                {
+                    var filasAfectadas = context.Database.ExecuteSqlRaw($"UsuarioChangeStatus {IdUsuario}, {estado}");
+                 
+                    if (filasAfectadas > 0)
+                    {
+                        diccionario["Resultado"] = true;
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                diccionario["Exepcion"] = ex;
+            }
+            return diccionario;
+        }
+
         public static Dictionary<string, object> Add(ML.Usuario usuario)
         {
 
@@ -102,7 +130,8 @@ namespace BL
                                          ApellidoMaterno = usario.ApellidoMaterno,
                                          IdColonia = direccion.IdColonia,
                                          Calle = direccion.Calle,
-                                         Imagen = usario.Imagen
+                                         Imagen = usario.Imagen,
+                                         Status = true
                                      }).ToList();
 
 

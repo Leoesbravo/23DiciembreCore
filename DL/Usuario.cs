@@ -24,6 +24,7 @@ public partial class Usuario
     public string? Password { get; set; }
     public string Calle { get; set; }
     public int IdColonia { get; set; }
+    public bool Status { get; set; }
 
     public virtual ICollection<Direccion> Direccions { get; set; } = new List<Direccion>();
 
