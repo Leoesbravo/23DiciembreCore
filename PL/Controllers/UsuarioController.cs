@@ -6,9 +6,10 @@ namespace PL.Controllers
     {
         public ActionResult GetAll()
         {
-            ML.Usuario usuario = new ML.Usuario("","","");
+            ML.Usuario usuario = new ML.Usuario("", "", "");
             Dictionary<string, object> result = BL.Usuario.GetAll(usuario);
             usuario = (ML.Usuario)result["Usuario"];
+            
             return View(usuario);
         }
         [HttpGet]
@@ -37,6 +38,13 @@ namespace PL.Controllers
 
             }
             return View(usuario);
+        }
+        [HttpPost]
+        public JsonResult ChangeStatus(int idUsuario,bool estado)
+        {
+            Dictionary<string, object> resultado  = BL.Usuario.ChangeStatus(idUsuario,estado);
+            bool result = (bool)resultado["Resultado"];
+            return Json(result);
         }
         public byte[] ConvertToBytes(IFormFile foto)
         {
